@@ -110,7 +110,7 @@ spec:
         image: python:3.9-slim
         command: ["/bin/sh", "-c"]
         args:
-          - pip install flask kafka-python && python /app/app.py
+          - pip install flask kafka-python kubernetes && python /app/app.py
         ports:
         - containerPort: 5000
         volumeMounts:
