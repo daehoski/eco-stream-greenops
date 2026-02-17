@@ -44,19 +44,19 @@ Eco-Stream-GreenOps/
 
 ```mermaid
 graph TD
-    User[User] -->|Upload Video| Web[Eco-Web (Frontend)]
-    Web -->|Push Metadata| Kafka[Kafka Cluster]
+    User[User] -->|Upload Video| Web["Eco-Web (Frontend)"]
+    Web -->|Push Metadata| Kafka["Kafka Cluster"]
     
     subgraph "Control Plane (Always On)"
-        Master[K8s Master]
-        Worker1[Worker 1 (Main Node)]
-        KEDA[KEDA Scaler]
-        GreenOps[GreenOps Controller]
+        Master["K8s Master"]
+        Worker1["Worker 1 (Main Node)"]
+        KEDA["KEDA Scaler"]
+        GreenOps["GreenOps Controller"]
     end
     
     subgraph "Green Zone (Variable Power)"
-        Worker2[Worker 2 (GPU Node)]
-        Pod[Eco-Worker Pods]
+        Worker2["Worker 2 (GPU Node)"]
+        Pod["Eco-Worker Pods"]
     end
     
     Kafka -->|Trigger| KEDA
