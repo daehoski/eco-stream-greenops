@@ -1,583 +1,931 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eco-Kube Portfolio</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Kube Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --surface: #141b2d;
+            --surface-light: #1f2b45;
+            --border: #2a3a5c;
+            --accent: #00e5a0;
+            --accent2: #00b4d8;
+            --accent-dim: rgba(0, 229, 160, 0.1);
+            --text: #e8ecf4;
+            --text-dim: #8892a8;
+            --danger: #ff5757;
+            --warning: #ffb84d;
+            --blue: #4d9aff;
+            --purple: #a78bfa;
+        }
 
-    :root {
-      --bg: #0f172a;
-      --surface: #1e293b;
-      --surface-light: #334155;
-      --accent: #10b981;
-      --accent-light: #34d399;
-      --accent-dim: rgba(16, 185, 129, 0.15);
-      --text: #f1f5f9;
-      --text-dim: #94a3b8;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --blue: #3b82f6;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
 
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
+        .page {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 48px 40px;
+        }
 
-    .page {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px;
-    }
+        /* === HERO === */
+        .hero {
+            text-align: center;
+            padding: 48px 0 40px;
+            position: relative;
+        }
 
-    /* ─── HEADER ─── */
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      padding-bottom: 30px;
-      border-bottom: 1px solid var(--surface-light);
-    }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 229, 160, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
 
-    .header .badge {
-      display: inline-block;
-      background: var(--accent-dim);
-      color: var(--accent);
-      padding: 4px 14px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
+        .hero .tag {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(0, 229, 160, 0.15), rgba(0, 180, 216, 0.15));
+            border: 1px solid rgba(0, 229, 160, 0.3);
+            color: var(--accent);
+            padding: 6px 20px;
+            border-radius: 24px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
 
-    .header h1 {
-      font-size: 2.2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 8px;
-    }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+        }
 
-    .header .subtitle {
-      font-size: 1rem;
-      color: var(--text-dim);
-      font-weight: 300;
-    }
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-    .header .meta {
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      font-size: 0.8rem;
-      color: var(--text-dim);
-    }
+        .hero .meta-row {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+            font-size: 0.8rem;
+        }
 
-    .header .meta span {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+        .hero .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-dim);
+        }
 
-    .header .meta .dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      display: inline-block;
-    }
+        .hero .meta-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
 
-    /* ─── SECTIONS ─── */
-    .section {
-      margin-bottom: 32px;
-    }
+        /* === SECTION === */
+        .section {
+            margin-bottom: 40px;
+        }
 
-    .section-title {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+        .section-label {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--surface-light);
-    }
+        .section-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
 
-    /* ─── PROBLEM CARD ─── */
-    .problem-card {
-      background: linear-gradient(135deg, #7f1d1d22, #1e293b);
-      border: 1px solid #7f1d1d44;
-      border-left: 3px solid var(--danger);
-      border-radius: 8px;
-      padding: 20px 24px;
-      margin-bottom: 24px;
-    }
+        /* === CARDS === */
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
 
-    .problem-card h3 {
-      color: #fca5a5;
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-    }
+        .card.danger {
+            border-left: 3px solid var(--danger);
+            background: linear-gradient(135deg, rgba(255, 87, 87, 0.05), var(--surface));
+        }
 
-    .problem-card p {
-      color: var(--text-dim);
-      font-size: 0.85rem;
-    }
+        .card.success {
+            border-left: 3px solid var(--accent);
+            background: linear-gradient(135deg, rgba(0, 229, 160, 0.05), var(--surface));
+        }
 
-    .problem-card .stat {
-      color: var(--danger);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
+        .card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
 
-    /* ─── SOLUTION CARD ─── */
-    .solution-card {
-      background: linear-gradient(135deg, rgba(16,185,129,0.08), var(--surface));
-      border: 1px solid rgba(16,185,129,0.2);
-      border-left: 3px solid var(--accent);
-      border-radius: 8px;
-      padding: 20px 24px;
-      margin-bottom: 24px;
-    }
+        .card.danger h3 {
+            color: #ff9b9b;
+        }
 
-    .solution-card h3 {
-      color: var(--accent-light);
-      font-size: 0.95rem;
-      margin-bottom: 8px;
-    }
+        .card.success h3 {
+            color: var(--accent);
+        }
 
-    .solution-card p {
-      color: var(--text-dim);
-      font-size: 0.85rem;
-    }
+        .card p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
 
-    /* ─── ARCHITECTURE ─── */
-    .arch-flow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      margin: 24px 0;
-      flex-wrap: wrap;
-    }
+        .card .highlight {
+            color: var(--danger);
+            font-weight: 800;
+            font-size: 1.15rem;
+        }
 
-    .arch-node {
-      background: var(--surface);
-      border: 1px solid var(--surface-light);
-      border-radius: 10px;
-      padding: 14px 18px;
-      text-align: center;
-      min-width: 140px;
-    }
+        .card .highlight-green {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.15rem;
+        }
 
-    .arch-node .label {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+        /* === ARCHITECTURE === */
+        .arch-pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
 
-    .arch-node .name {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-top: 4px;
-    }
+        .arch-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+            min-width: 150px;
+            transition: transform 0.2s;
+        }
 
-    .arch-node.kafka { border-color: var(--warning); }
-    .arch-node.kafka .name { color: var(--warning); }
-    .arch-node.keda { border-color: var(--blue); }
-    .arch-node.keda .name { color: var(--blue); }
-    .arch-node.greenops { border-color: var(--accent); }
-    .arch-node.greenops .name { color: var(--accent); }
+        .arch-box:hover {
+            transform: translateY(-2px);
+        }
 
-    .arch-arrow {
-      font-size: 1.2rem;
-      color: var(--text-dim);
-      padding: 0 8px;
-    }
+        .arch-box .icon {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
 
-    .arch-desc {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      text-align: center;
-      margin-top: 4px;
-    }
+        .arch-box .label {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-    /* ─── THREE COLUMNS ─── */
-    .three-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
-      margin: 20px 0;
-    }
+        .arch-box .name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-top: 4px;
+        }
 
-    .col-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-light);
-      border-radius: 10px;
-      padding: 18px;
-      text-align: center;
-    }
+        .arch-box.orange {
+            border-color: var(--warning);
+        }
 
-    .col-card .icon {
-      font-size: 1.8rem;
-      margin-bottom: 8px;
-    }
+        .arch-box.orange .name {
+            color: var(--warning);
+        }
 
-    .col-card h4 {
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
+        .arch-box.blue {
+            border-color: var(--blue);
+        }
 
-    .col-card p {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      line-height: 1.5;
-    }
+        .arch-box.blue .name {
+            color: var(--blue);
+        }
 
-    /* ─── TECH STACK ─── */
-    .tech-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin: 16px 0;
-    }
+        .arch-box.green {
+            border-color: var(--accent);
+        }
 
-    .tech-item {
-      background: var(--surface);
-      border: 1px solid var(--surface-light);
-      border-radius: 8px;
-      padding: 12px;
-      text-align: center;
-    }
+        .arch-box.green .name {
+            color: var(--accent);
+        }
 
-    .tech-item .name {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text);
-    }
+        .arch-box.purple {
+            border-color: var(--purple);
+        }
 
-    .tech-item .role {
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      margin-top: 2px;
-    }
+        .arch-box.purple .name {
+            color: var(--purple);
+        }
 
-    /* ─── RESULTS ─── */
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin: 16px 0;
-    }
+        .arch-arrow {
+            font-size: 1.4rem;
+            color: var(--text-dim);
+            padding: 0 10px;
+        }
 
-    .result-card {
-      background: var(--surface);
-      border: 1px solid var(--surface-light);
-      border-radius: 10px;
-      padding: 16px;
-      text-align: center;
-    }
+        .arch-caption {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-top: 8px;
+        }
 
-    .result-card .number {
-      font-size: 1.6rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--blue));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
+        /* === 3-COL DETAIL === */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 20px 0;
+        }
 
-    .result-card .unit {
-      font-size: 0.7rem;
-      color: var(--text-dim);
-      margin-top: 4px;
-    }
+        .detail-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px 20px;
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* ─── TROUBLESHOOTING ─── */
-    .trouble-box {
-      background: var(--surface);
-      border: 1px solid var(--surface-light);
-      border-radius: 10px;
-      padding: 20px;
-      margin: 16px 0;
-    }
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+        }
 
-    .trouble-box .issue {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--surface-light);
-    }
+        .detail-card.c1::before {
+            background: linear-gradient(90deg, var(--warning), transparent);
+        }
 
-    .trouble-box .issue:last-child {
-      margin-bottom: 0;
-      padding-bottom: 0;
-      border-bottom: none;
-    }
+        .detail-card.c2::before {
+            background: linear-gradient(90deg, var(--blue), transparent);
+        }
 
-    .trouble-box .tag {
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 4px;
-      white-space: nowrap;
-      height: fit-content;
-      margin-top: 2px;
-    }
+        .detail-card.c3::before {
+            background: linear-gradient(90deg, var(--accent), transparent);
+        }
 
-    .trouble-box .tag.problem { background: #7f1d1d; color: #fca5a5; }
-    .trouble-box .tag.cause { background: #78350f; color: #fcd34d; }
-    .trouble-box .tag.fix { background: #064e3b; color: #6ee7b7; }
+        .detail-card h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
 
-    .trouble-box .text {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-    }
+        .detail-card .tech-badge {
+            display: inline-block;
+            background: var(--accent-dim);
+            color: var(--accent);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
 
-    /* ─── FOOTER ─── */
-    .footer {
-      text-align: center;
-      padding-top: 24px;
-      border-top: 1px solid var(--surface-light);
-      margin-top: 32px;
-    }
+        .detail-card ul {
+            list-style: none;
+            padding: 0;
+        }
 
-    .footer .links {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-top: 12px;
-    }
+        .detail-card li {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            padding: 3px 0;
+            padding-left: 14px;
+            position: relative;
+        }
 
-    .footer a {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
+        .detail-card li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--border);
+        }
 
-    .footer .copyright {
-      color: var(--text-dim);
-      font-size: 0.7rem;
-      margin-top: 16px;
-    }
+        /* === TECH STACK === */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 16px 0;
+        }
 
-    /* ─── PRINT ─── */
-    @media print {
-      body { background: var(--bg) !important; }
-      .page { padding: 20px; }
-      .header h1 { font-size: 1.8rem; }
-    }
+        .tech-pill {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 12px;
+            text-align: center;
+        }
 
-    @page {
-      size: A4;
-      margin: 10mm;
-    }
-  </style>
+        .tech-pill .name {
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .tech-pill .role {
+            font-size: 0.65rem;
+            color: var(--text-dim);
+            margin-top: 2px;
+        }
+
+        /* === STATS === */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin: 16px 0;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card .label {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        /* === TIMELINE === */
+        .timeline {
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(42, 58, 92, 0.5);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-step {
+            min-width: 32px;
+            height: 32px;
+            background: var(--surface);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .timeline-content h4 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .timeline-content p {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        /* === TROUBLESHOOTING === */
+        .trouble-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+        }
+
+        .trouble-row {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(42, 58, 92, 0.4);
+            align-items: flex-start;
+        }
+
+        .trouble-row:last-child {
+            border-bottom: none;
+        }
+
+        .trouble-tag {
+            font-size: 0.62rem;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 4px;
+            white-space: nowrap;
+            margin-top: 2px;
+        }
+
+        .trouble-tag.symptom {
+            background: #3b1111;
+            color: #ff9b9b;
+        }
+
+        .trouble-tag.cause {
+            background: #3b2f11;
+            color: #ffd280;
+        }
+
+        .trouble-tag.fix {
+            background: #0d3b2a;
+            color: #6ee7b7;
+        }
+
+        .trouble-text {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        /* === MEDIA === */
+        .media-section {
+            margin: 20px 0;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+
+        .media-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .media-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .media-item .caption {
+            padding: 12px 16px;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .media-item .caption strong {
+            color: var(--text);
+        }
+
+        .video-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-container .caption {
+            padding: 12px 16px;
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        /* === FOOTER === */
+        .footer {
+            text-align: center;
+            padding: 32px 0 16px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        .footer a {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: var(--bg);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 10px 28px;
+            border-radius: 8px;
+        }
+
+        .footer .copy {
+            color: var(--text-dim);
+            font-size: 0.7rem;
+            margin-top: 16px;
+        }
+
+        /* === PRINT === */
+        @media print {
+            body {
+                background: var(--bg) !important;
+            }
+
+            .page {
+                padding: 16px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @page {
+            size: A4;
+            margin: 8mm;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="page">
+    <div class="page">
 
-    <!-- HEADER -->
-    <div class="header">
-      <div class="badge">GreenOps Platform</div>
-      <h1>Eco-Kube</h1>
-      <div class="subtitle">유휴 베어메탈 서버의 전력을 0W로 — 이벤트 기반 물리 노드 자동 전원 제어</div>
-      <div class="meta">
-        <span><span class="dot"></span> Kubernetes v1.29  Bare-Metal 3-Node Cluster</span>
-        <span><span class="dot"></span> 2026.02</span>
-        <span><span class="dot"></span> 1인 설계 및 구현</span>
-      </div>
+        <!-- ===== HERO ===== -->
+        <div class="hero">
+            <div class="tag">Bare-Metal GreenOps Platform</div>
+            <h1>Eco-Kube</h1>
+            <div class="subtitle">
+                유휴 베어메탈 서버의 전력을 0W로 만드는<br>
+                이벤트 기반 물리 노드 자동 전원 제어 플랫폼
+            </div>
+            <div class="meta-row">
+                <div class="meta-item"><span class="meta-dot"></span> Kubernetes v1.29 / 3-Node Bare-Metal</div>
+                <div class="meta-item"><span class="meta-dot"></span> 2026.02</div>
+                <div class="meta-item"><span class="meta-dot"></span> 1인 설계 및 구현</div>
+            </div>
+        </div>
+
+        <!-- ===== PROBLEM ===== -->
+        <div class="section">
+            <div class="section-label">Problem</div>
+            <div class="card danger">
+                <h3>데이터센터 전력의 30%는 좀비 서버에서 낭비됩니다</h3>
+                <p>
+                    퍼블릭 클라우드는 서버리스(Serverless)로 해결했지만, <strong>온프레미스 베어메탈</strong> 환경에서는
+                    트래픽과 무관하게 서버가 24시간 가동됩니다.
+                    유휴 서버 1대의 대기 전력은 약 <span class="highlight">300W</span>,
+                    연간 <span class="highlight">2,628kWh</span>를 낭비합니다.
+                    Kubernetes의 HPA는 <strong>파드 수</strong>만 조절할 뿐, <strong>물리 서버 전원</strong>은 제어하지 못합니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- ===== SOLUTION ===== -->
+        <div class="section">
+            <div class="section-label">Solution</div>
+            <div class="card success">
+                <h3>트래픽이 없으면 물리 서버를 실제로 꺼버립니다</h3>
+                <p>
+                    Kafka의 버퍼링 + KEDA의 이벤트 기반 스케일링 + 커스텀 GreenOps 컨트롤러의 물리 노드 전원 제어를 결합하여,
+                    <strong>유휴 상태의 Worker Node 전력을 <span class="highlight-green">0W</span></strong>로 만듭니다.
+                    새 요청이 들어오면 Wake-on-LAN으로 수 초 내 부팅, 즉시 워크로드 처리를 시작합니다.
+                </p>
+            </div>
+        </div>
+
+        <!-- ===== ARCHITECTURE ===== -->
+        <div class="section">
+            <div class="section-label">Architecture</div>
+            <div class="arch-pipeline">
+                <div class="arch-box">
+                    <div class="icon">&#x1F310;</div>
+                    <div class="label">Frontend</div>
+                    <div class="name">Eco-Web</div>
+                </div>
+                <div class="arch-arrow">&#x2192;</div>
+                <div class="arch-box orange">
+                    <div class="icon">&#x1F4E6;</div>
+                    <div class="label">Buffer</div>
+                    <div class="name">Kafka (KRaft)</div>
+                </div>
+                <div class="arch-arrow">&#x2192;</div>
+                <div class="arch-box blue">
+                    <div class="icon">&#x26A1;</div>
+                    <div class="label">Trigger</div>
+                    <div class="name">KEDA Scaler</div>
+                </div>
+                <div class="arch-arrow">&#x2192;</div>
+                <div class="arch-box purple">
+                    <div class="icon">&#x2699;</div>
+                    <div class="label">Processing</div>
+                    <div class="name">Eco-Workers</div>
+                </div>
+                <div class="arch-arrow">&#x2192;</div>
+                <div class="arch-box green">
+                    <div class="icon">&#x1F50C;</div>
+                    <div class="label">Power Control</div>
+                    <div class="name">GreenOps Controller</div>
+                </div>
+            </div>
+            <div class="arch-caption">
+                User Upload &#x2192; Kafka 버퍼링 &#x2192; KEDA가 Lag 기반 Pod 0&#x2194;10 스케일링 &#x2192; GreenOps가 물리 노드 전원
+                ON/OFF
+            </div>
+        </div>
+
+        <!-- ===== CORE IMPLEMENTATION ===== -->
+        <div class="section">
+            <div class="section-label">Core Implementation</div>
+            <div class="detail-grid">
+                <div class="detail-card c1">
+                    <span class="tech-badge" style="background:rgba(255,184,77,0.15);color:var(--warning);">Kafka
+                        KRaft</span>
+                    <h4>비동기 버퍼링</h4>
+                    <ul>
+                        <li>ZooKeeper 없이 Kafka 자체 합의(KRaft)</li>
+                        <li>10개 파티션으로 병렬 소비 구조</li>
+                        <li>Worker 0개여도 메시지 유실 없음</li>
+                        <li>Consumer Group 기반 파티션 할당</li>
+                        <li>댐(Dam) 패턴: 트래픽 폭주 흡수</li>
+                    </ul>
+                </div>
+                <div class="detail-card c2">
+                    <span class="tech-badge" style="background:rgba(77,154,255,0.15);color:var(--blue);">KEDA</span>
+                    <h4>이벤트 기반 스케일링</h4>
+                    <ul>
+                        <li>CPU 기반 HPA 대비 <strong>실제 작업량</strong> 기반</li>
+                        <li>lagThreshold: 1 (메시지 1개 = 즉시 반응)</li>
+                        <li>minReplicaCount: 0 (완전 제로 스케일)</li>
+                        <li>maxReplicaCount: 10 (파티션 수 매칭)</li>
+                        <li>cooldownPeriod: 30s (안정적 스케일인)</li>
+                    </ul>
+                </div>
+                <div class="detail-card c3">
+                    <span class="tech-badge">GreenOps Controller</span>
+                    <h4>물리 노드 전원 제어</h4>
+                    <ul>
+                        <li>Bash FSM(상태 머신) 직접 구현</li>
+                        <li>Pending Pod 감지 &#x2192; WOL 패킷 전송</li>
+                        <li>Empty Node 감지 &#x2192; Cordon + SSH Shutdown</li>
+                        <li>10초 간격 Health Check Loop</li>
+                        <li>Descheduler 연동 (빈 노드 생성)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== LIFECYCLE ===== -->
+        <div class="section">
+            <div class="section-label">GreenOps Lifecycle</div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-step">1</div>
+                    <div class="timeline-content">
+                        <h4>IDLE &#x2192; SCALE-OUT</h4>
+                        <p>사용자가 영상 업로드 &#x2192; Kafka Lag 발생 &#x2192; KEDA가 Worker Pod 0 &#x2192; 10 생성</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-step">2</div>
+                    <div class="timeline-content">
+                        <h4>SCALE-OUT &#x2192; WAKE-UP</h4>
+                        <p>Pod가 Pending 상태 &#x2192; Controller가 k8s-worker2에 Wake-on-LAN 전송 &#x2192; 노드 부팅 &#x2192;
+                            Uncordon</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-step">3</div>
+                    <div class="timeline-content">
+                        <h4>PROCESSING</h4>
+                        <p>10개 Worker가 Kafka 파티션에서 병렬 소비 &#x2192; FFmpeg 영상 처리 &#x2192; Lag 점진적 감소</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-step">4</div>
+                    <div class="timeline-content">
+                        <h4>SCALE-IN &#x2192; SHUTDOWN</h4>
+                        <p>Lag 0 도달 &#x2192; 30초 쿨다운 &#x2192; Pod 10 &#x2192; 0 &#x2192; Descheduler가 빈 노드 생성 &#x2192;
+                            Controller가 Shutdown</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TECH STACK ===== -->
+        <div class="section">
+            <div class="section-label">Tech Stack</div>
+            <div class="tech-grid">
+                <div class="tech-pill">
+                    <div class="name">Kubernetes</div>
+                    <div class="role">Orchestration</div>
+                </div>
+                <div class="tech-pill">
+                    <div class="name">Kafka (KRaft)</div>
+                    <div class="role">Event Buffer</div>
+                </div>
+                <div class="tech-pill">
+                    <div class="name">KEDA</div>
+                    <div class="role">Auto Scaling</div>
+                </div>
+                <div class="tech-pill">
+                    <div class="name">Descheduler</div>
+                    <div class="role">Consolidation</div>
+                </div>
+                <div class="tech-pill">
+                    <div class="name">Prometheus</div>
+                    <div class="role">Metrics Collection</div>
+                </div>
+                <div class="tech-pill">
+                    <div class="name">Grafana</div>
+                    <div class="role">Visualization</div>
+                </div>
+                <div class="tech-pill">
+                    <div class="name">Kepler (eBPF)</div>
+                    <div class="role">Power Monitoring</div>
+                </div>
+                <div class="tech-pill">
+                    <div class="name">Flask + Python</div>
+                    <div class="role">Application</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== RESULTS ===== -->
+        <div class="section">
+            <div class="section-label">Verification Results&nbsp;&nbsp;|&nbsp;&nbsp;300-Request Stress Test</div>
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="number">&lt; 2s</div>
+                    <div class="label">Scale-Out 반응 시간</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">10</div>
+                    <div class="label">최대 병렬 Pod</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">~5m</div>
+                    <div class="label">300건 전체 처리</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">0W</div>
+                    <div class="label">유휴 시 전력 소비</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MONITORING SCREENSHOTS ===== -->
+        <div class="section">
+            <div class="section-label">Monitoring Dashboard (Grafana + Kepler)</div>
+            <div class="media-grid">
+                <div class="media-item">
+                    <img src="images/grafanadashboard1.png" alt="Grafana Dashboard 1">
+                    <div class="caption"><strong>GreenOps Dashboard</strong> &#x2014; Worker Replicas, Node Status,
+                        CPU/Memory Usage, HPA 상태 실시간 모니터링</div>
+                </div>
+                <div class="media-item">
+                    <img src="images/grafanadashboard2(kepler).png" alt="Grafana Dashboard 2 - Kepler">
+                    <div class="caption"><strong>Kepler Power Dashboard</strong> &#x2014; eBPF 기반 노드별/컨테이너별 전력
+                        소비량(Watts) 실시간 측정</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== DEMO VIDEO ===== -->
+        <div class="section">
+            <div class="section-label">Demo Video</div>
+            <div class="video-container">
+                <video controls preload="metadata" poster="images/grafanadashboard1.png">
+                    <source src="images/시연영상.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="caption">
+                    <strong>전체 시연 영상</strong> &#x2014;
+                    스트레스 테스트(300건 업로드) &#x2192; Pod Scale-Out(0&#x2192;10) &#x2192; 처리 &#x2192; Scale-In(10&#x2192;0)
+                    &#x2192; Node Shutdown 전체 사이클
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== TROUBLESHOOTING ===== -->
+        <div class="section">
+            <div class="section-label">Troubleshooting Experience</div>
+            <div class="trouble-container">
+                <div class="trouble-row">
+                    <span class="trouble-tag symptom">Symptom</span>
+                    <span class="trouble-text">Pod 10개 중 3개만 작업 처리, 나머지 7개는 idle 상태로 큐를 소비하지 않음</span>
+                </div>
+                <div class="trouble-row">
+                    <span class="trouble-tag cause">Root Cause</span>
+                    <span class="trouble-text">Kafka 토픽 파티션 3&#x2192;10 변경 후, Consumer가 stale metadata를 유지하여 기존 3개 파티션만
+                        소비. 신규 7개 파티션의 메시지가 적체</span>
+                </div>
+                <div class="trouble-row">
+                    <span class="trouble-tag fix">Resolution</span>
+                    <span class="trouble-text"><code>kubectl rollout restart deployment eco-web eco-worker</code>
+                        &#x2014; Consumer 재시작으로 메타데이터 리프레시, 10개 파티션 전체에서 균등 소비 확인</span>
+                </div>
+            </div>
+            <div class="trouble-container">
+                <div class="trouble-row">
+                    <span class="trouble-tag symptom">Symptom</span>
+                    <span class="trouble-text">KEDA가 Lag 높다고 보고하지만, 실제 Worker들은 idle 상태. Pod가 0으로 내려가지 않음</span>
+                </div>
+                <div class="trouble-row">
+                    <span class="trouble-tag cause">Root Cause</span>
+                    <span class="trouble-text">Consumer Group offset이 stale 파티션을 참조 &#x2192; Kafka가 phantom lag를 보고
+                        &#x2192; KEDA가 불필요한 replica 유지</span>
+                </div>
+                <div class="trouble-row">
+                    <span class="trouble-tag fix">Resolution</span>
+                    <span class="trouble-text">Deployment rolling restart로 모든 Consumer가 최신 offset으로 재합류 &#x2192; Lag 0
+                        확인 &#x2192; 정상 scale-in 진행</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+            <a href="https://github.com/daehoski/eco-stream-greenops" target="_blank">GitHub Repository &#x2192;</a>
+            <div class="copy">Eco-Kube &copy; 2026</div>
+        </div>
+
     </div>
-
-    <!-- PROBLEM -->
-    <div class="section">
-      <div class="section-title">Problem</div>
-      <div class="problem-card">
-        <h3>데이터센터 전력의 30%는 좀비 서버에서 낭비됩니다</h3>
-        <p>
-          퍼블릭 클라우드는 서버리스로 해결했지만, <strong>온프레미스 베어메탈 환경</strong>에서는
-          트래픽과 무관하게 서버가 24시간 가동됩니다.
-          유휴 서버 1대의 대기 전력은 약 <span class="stat">300W</span>,
-          연간 <span class="stat">2,628kWh</span>를 소비합니다.
-        </p>
-      </div>
-    </div>
-
-    <!-- SOLUTION -->
-    <div class="section">
-      <div class="section-title">Solution</div>
-      <div class="solution-card">
-        <h3>트래픽이 없으면 물리 서버의 전원을 실제로 차단합니다</h3>
-        <p>
-          Kafka의 버퍼링 + KEDA의 이벤트 기반 스케일링 + 커스텀 컨트롤러의 물리 노드 전원 제어를 결합하여,
-          <strong>유휴 상태의 Worker Node 전력을 0W</strong>로 만듭니다.
-          요청이 들어오면 Wake-on-LAN으로 수 초 내 부팅합니다.
-        </p>
-      </div>
-    </div>
-
-    <!-- ARCHITECTURE -->
-    <div class="section">
-      <div class="section-title">Architecture</div>
-      <div class="arch-flow">
-        <div class="arch-node">
-          <div class="label">Frontend</div>
-          <div class="name">Eco-Web (Flask)</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node kafka">
-          <div class="label">Buffer (Dam)</div>
-          <div class="name">Kafka (KRaft)</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node keda">
-          <div class="label">Trigger</div>
-          <div class="name">KEDA Scaler</div>
-        </div>
-        <div class="arch-arrow">→</div>
-        <div class="arch-node greenops">
-          <div class="label">Power Control</div>
-          <div class="name">GreenOps Controller</div>
-        </div>
-      </div>
-      <div class="arch-desc">
-        User Upload → Kafka 버퍼링 → KEDA가 Lag 기반 Pod 스케일링 → GreenOps가 물리 노드 전원 ON/OFF
-      </div>
-    </div>
-
-    <!-- CORE FEATURES -->
-    <div class="section">
-      <div class="section-title">Core Implementation</div>
-      <div class="three-col">
-        <div class="col-card">
-          <div class="icon">&#x1F4E6;</div>
-          <h4>Kafka 비동기 버퍼링</h4>
-          <p>10 파티션으로 병렬 소비.<br>Worker 없어도 메시지 유실 없이 대기.</p>
-        </div>
-        <div class="col-card">
-          <div class="icon">&#x26A1;</div>
-          <h4>KEDA 이벤트 스케일링</h4>
-          <p>CPU가 아닌 Kafka Lag 기반.<br>lagThreshold=1로 즉시 반응.<br>0 ↔ 10 Pod 자동 스케일.</p>
-        </div>
-        <div class="col-card">
-          <div class="icon">&#x1F50C;</div>
-          <h4>물리 노드 전원 제어</h4>
-          <p>Pending → WOL 부팅.<br>Empty → SSH Shutdown.<br>Bash FSM으로 직접 구현.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- TECH STACK -->
-    <div class="section">
-      <div class="section-title">Tech Stack</div>
-      <div class="tech-grid">
-        <div class="tech-item">
-          <div class="name">Kubernetes</div>
-          <div class="role">Orchestration</div>
-        </div>
-        <div class="tech-item">
-          <div class="name">Kafka (KRaft)</div>
-          <div class="role">Event Buffer</div>
-        </div>
-        <div class="tech-item">
-          <div class="name">KEDA</div>
-          <div class="role">Auto Scaling</div>
-        </div>
-        <div class="tech-item">
-          <div class="name">Descheduler</div>
-          <div class="role">Consolidation</div>
-        </div>
-        <div class="tech-item">
-          <div class="name">Prometheus</div>
-          <div class="role">Metrics</div>
-        </div>
-        <div class="tech-item">
-          <div class="name">Grafana</div>
-          <div class="role">Visualization</div>
-        </div>
-        <div class="tech-item">
-          <div class="name">Kepler (eBPF)</div>
-          <div class="role">Power Monitoring</div>
-        </div>
-        <div class="tech-item">
-          <div class="name">Flask + Python</div>
-          <div class="role">Application</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RESULTS -->
-    <div class="section">
-      <div class="section-title">Verification Results (300-Request Stress Test)</div>
-      <div class="results-grid">
-        <div class="result-card">
-          <div class="number">&lt; 2s</div>
-          <div class="unit">스케일아웃 반응 시간</div>
-        </div>
-        <div class="result-card">
-          <div class="number">10</div>
-          <div class="unit">최대 병렬 Pod 수</div>
-        </div>
-        <div class="result-card">
-          <div class="number">~5m</div>
-          <div class="unit">300건 전체 처리</div>
-        </div>
-        <div class="result-card">
-          <div class="number">0W</div>
-          <div class="unit">유휴 시 전력 소비</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TROUBLESHOOTING -->
-    <div class="section">
-      <div class="section-title">Troubleshooting</div>
-      <div class="trouble-box">
-        <div class="issue">
-          <span class="tag problem">Issue</span>
-          <span class="text">파드 10개 중 3개만 작업 처리, 나머지 7개는 idle 상태로 방치</span>
-        </div>
-        <div class="issue">
-          <span class="tag cause">Cause</span>
-          <span class="text">Kafka 파티션 3→10 변경 후 Consumer가 stale metadata를 유지하여 기존 3개 파티션만 소비</span>
-        </div>
-        <div class="issue">
-          <span class="tag fix">Fix</span>
-          <span class="text">kubectl rollout restart로 Consumer 재시작 → 메타데이터 리프레시 → 10개 파티션 전체 활용</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="links">
-        <a href="https://github.com/daehoski/eco-stream-greenops">GitHub Repository</a>
-      </div>
-      <div class="copyright">Eco-Kube &copy; 2026</div>
-    </div>
-
-  </div>
 </body>
+
 </html>
