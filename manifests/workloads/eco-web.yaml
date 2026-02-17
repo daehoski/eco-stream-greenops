@@ -41,7 +41,7 @@ data:
     </head>
     <body>
         <div class="container">
-            <h1>🌿 Eco-Stream</h1>
+            <h1>Eco-Stream</h1>
             <p>Upload a video to process with Green Energy.</p>
             <form action="/upload" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" required>
@@ -83,7 +83,7 @@ data:
         producer.send(TOPIC, message)
         producer.flush()
         
-        return render_template_string(HTML_TEMPLATE, message=f"✅ '{filename}' queued for Green Processing!", hostname=socket.gethostname())
+        return render_template_string(HTML_TEMPLATE, message=f"'{filename}' queued for Green Processing!", hostname=socket.gethostname())
 
     if __name__ == '__main__':
         app.run(host='0.0.0.0', port=5000)

@@ -1,4 +1,4 @@
-# 🌿 Project Eco-Kube: Bare-Metal GreenOps Platform
+# Project Eco-Kube: Bare-Metal GreenOps Platform
 
 > **"Zero-Carbon Idle Compute"**  
 > 트래픽이 없으면 물리 서버의 전원을 자동으로 차단하고, 요청이 들어오면 수 초내로 부팅하여 응답하는 친환경 온프레미스 인프라.
@@ -10,14 +10,14 @@
 **Eco-Kube**는 퍼블릭 클라우드의 'Serverless' 개념을 온프레미스 베어메탈 환경에 구현한 프로젝트입니다.  
 Kafka의 버퍼링 능력과 KEDA의 이벤트 기반 스케일링을 결합하여, **유휴 상태(Idle)의 Worker Node 전력을 0W로 만드는 것**이 핵심 목표입니다.
 
-### 🎯 핵심 차별점
+### 핵심 차별점
 - **Cost Efficiency**: 사용하지 않는 고성능 GPU/CPU 서버의 전기를 물리적으로 차단.
 - **Underlay Control**: 단순 파드 스케일링을 넘어, Kubernetes가 물리 노드의 ACPI(전원)를 직접 제어.
 - **Event-Driven**: CPU 부하가 아닌 '실제 처리할 작업(Kafka Lag)' 기반의 정밀한 스케일링.
 
 ---
 
-## 📂 Repository Structure (프로젝트 구조)
+## Repository Structure (프로젝트 구조)
 
 ```bash
 Eco-Stream-GreenOps/
@@ -85,7 +85,7 @@ graph TD
 
 ## 4. 시나리오 검증 (Verification)
 
-### ✅ 시나리오: "Eco-Stream" (영상 변환 파이프라인)
+### 시나리오: "Eco-Stream" (영상 변환 파이프라인)
 1.  **Idle**: 트래픽 없음 → `Worker 2` **OFF (Power: 0W)**.
 2.  **Traffic Spike**: 사용자 영상 50개 업로드 → Kafka Lag 급증.
 3.  **Scale Out**: KEDA가 Worker Pod 10개 요청 → 노드 부족으로 `Pending`.

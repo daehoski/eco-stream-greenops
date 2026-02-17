@@ -1,4 +1,4 @@
-# 🎥 Eco-Kube Demo Script
+# Eco-Kube Demo Script
 
 ## Scene 1: Intro (0:00 ~ 0:30)
 - **화면**: `README.md` 아키텍처 다이어그램.

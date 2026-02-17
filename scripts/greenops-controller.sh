@@ -44,19 +44,19 @@ while true; do
 
     # 1. Wake Up Logic: Pending Pods OR (Lag > 0 AND Node Empty & Cordoned)
     if [[ "$pending_pods" -gt 0 && "$cordoned" == "true" ]]; then
-        log "🚀 Pending pods detected ($pending_pods). Waking up $NODE_NAME..."
+        log "Pending pods detected ($pending_pods). Waking up $NODE_NAME..."
         "$SCRIPT_DIR/wake_node.sh"
         $KUBE_CMD uncordon $NODE_NAME
         
     elif [[ "$lag" -gt 0 && "$(is_node_empty)" == "true" && "$cordoned" == "true" ]]; then
-        log "🚀 Kafka lag detected ($lag) and node is empty but cordoned. Waking up $NODE_NAME..."
+        log "Kafka lag detected ($lag) and node is empty but cordoned. Waking up $NODE_NAME..."
         "$SCRIPT_DIR/wake_node.sh"
         $KUBE_CMD uncordon $NODE_NAME
 
     # 2. Scale-In/Shutdown Logic: No Lag AND No Pending Pods AND Node Empty
     elif [[ "$lag" -eq 0 && "$pending_pods" -eq 0 ]]; then
         if [[ "$(is_node_empty)" == "true" && "$cordoned" != "true" ]]; then
-            log "⚠️ Node $NODE_NAME is idle (0 user pods). Initiating shutdown sequence..."
+            log "Node $NODE_NAME is idle (0 user pods). Initiating shutdown sequence..."
             $KUBE_CMD cordon $NODE_NAME
             "$SCRIPT_DIR/sleep_node.sh" # Execute shutdown command
             

@@ -1,9 +1,9 @@
 # Eco-Kube GreenOps Implementation Walkthrough
 
-## 📝 1. 작업 요약 (Summary of Work)
+## 1. 작업 요약 (Summary of Work)
 이번 세션에서는 불필요한 전력 소모를 막기 위해 **"빈 노드 만들기(Consolidation)"**와 **"자동 전원 제어(Auto ON/OFF)"** 기능을 구현했습니다.
 
-### 🛠️ 생성 및 수정된 파일 (Changes)
+### 생성 및 수정된 파일 (Changes)
 | 구분 | 파일명 | 설명 |
 | :--- | :--- | :--- |
 | **New** | **`descheduler.yaml`** | **[역할: 청소부]** 흩어져 있는 파드를 정리하여 한 곳으로 모읍니다. (`RemoveDuplicates`, `RemovePodsViolatingNodeAffinity` 정책 사용) |
@@ -54,7 +54,7 @@
   ```
 - **결과**: 파드가 사라지자마자 노드가 Cordon 되고 절전 모드로 진입함.
 
-## 🚀 4. 최종 시나리오 검증: Eco-Stream (20:30:00)
+## 4. 최종 시나리오 검증: Eco-Stream (20:30:00)
 
 ### 4.1 시나리오 흐름
 1. **Upload**: 사용자가 `eco-web`을 통해 비디오 업로드.
@@ -67,25 +67,25 @@
 ### 4.2 검증 로그
 **Step 1. Upload & Wake-Up**
 ```text
-[2026-02-17 20:25:39] 🚀 Pending pods detected (1). Waking up k8s-worker2...
-[2026-02-17 20:25:39] 🟢 [POWER-ON] 트래픽 급증 감지! Worker 2 (GPU Node) 부팅 신호 전송 완료.
+[2026-02-17 20:25:39] Pending pods detected (1). Waking up k8s-worker2...
+[2026-02-17 20:25:39] [POWER-ON] 트래픽 급증 감지! Worker 2 (GPU Node) 부팅 신호 전송 완료.
 ```
 
 **Step 2. Processing (Pod Logs)**
 ```text
-♻️ [RECEIVED] Processing video: test-video.mp4
-🎬 [FFmpeg] Transcoding test-video.mp4 to H.265 (HEVC)...
-✅ [DONE] Finished test-video.mp4 in 5.01s. Waiting for next...
+[RECEIVED] Processing video: test-video.mp4
+[FFmpeg] Transcoding test-video.mp4 to H.265 (HEVC)...
+[DONE] Finished test-video.mp4 in 5.01s. Waiting for next...
 ```
 
 **Step 3. Shutdown (After Cooldown)**
 ```text
-[2026-02-17 20:30:00] ⚠️  Node k8s-worker2 is idle (0 user pods). Initiating shutdown sequence...
+[2026-02-17 20:30:00] Node k8s-worker2 is idle (0 user pods). Initiating shutdown sequence...
 [2026-02-17 20:30:00] Locked node (Cordon).
-[2026-02-17 20:30:00] 🔴 [POWER-OFF] 대기열 해소 확인. Worker 2 절전 모드 진입.
+[2026-02-17 20:30:00] [POWER-OFF] 대기열 해소 확인. Worker 2 절전 모드 진입.
 ```
 
-### 🎊 결론
+### 결론
 **"트래픽이 들어오면 켜지고, 일이 끝나면 꺼지는"** 완전 자동화된 친환경 쿠버네티스 플랫폼 구축을 완료했습니다.
 
 ### 5.1 Stress Test (Extended)

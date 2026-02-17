@@ -40,13 +40,13 @@ data:
     for message in consumer:
         data = message.value
         filename = data.get('filename', 'unknown')
-        print(f"♻️ [RECEIVED] Processing video: {filename}")
+        print(f"[RECEIVED] Processing video: {filename}")
         
         # Simulate Heavy Processing (FFmpeg Transcoding)
         # We will simulate CPU load
         start_time = time.time()
         
-        print(f"🎬 [FFmpeg] Transcoding {filename} to H.265 (HEVC)...")
+        print(f"[FFmpeg] Transcoding {filename} to H.265 (HEVC)...")
         # In real scenario: os.system(f"ffmpeg -i {input} ...")
         
         # Simulation: Sleep 5 seconds per job
@@ -54,8 +54,8 @@ data:
         
         end_time = time.time()
         duration = end_time - start_time
-        print(f"🗑️ [CLEANUP] Deleting source video: {filename} (Freeing 50MB)")
-        print(f"✅ [DONE] Finished {filename} in {duration:.2f}s. Waiting for next...")
+        print(f"[CLEANUP] Deleting source video: {filename} (Freeing 50MB)")
+        print(f"[DONE] Finished {filename} in {duration:.2f}s. Waiting for next...")
 
 ---
 apiVersion: apps/v1
