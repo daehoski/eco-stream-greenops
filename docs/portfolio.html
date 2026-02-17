@@ -972,12 +972,22 @@
 
         <div class="sec">
             <div class="label">Demo Video — Full Lifecycle</div>
-            <div class="vc">
-                <video controls preload="metadata" poster="images/grafanadashboard1.png">
-                    <source src="images/시연영상.mp4" type="video/mp4">
-                </video>
-                <div class="cap">
-                    <strong>전체 시연 영상</strong> — 300건 업로드 → Pod 0→10 → WOL 부팅 → 처리 → Scale-In → Shutdown 전체 사이클
+            <div class="mi" style="position:relative">
+                <img src="images/grafanadashboard1.png" alt="Demo Video Thumbnail" style="opacity:0.7">
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+                            background:rgba(0,0,0,0.7);border:2px solid var(--green);border-radius:50%;
+                            width:64px;height:64px;display:flex;align-items:center;justify-content:center">
+                    <span style="font-size:1.8rem;margin-left:4px">▶</span>
+                </div>
+                <div class="cap" style="text-align:center">
+                    <strong>전체 시연 영상</strong> — 300건 업로드 → Pod 0→10 → WOL 부팅 → 처리 → Scale-In → Shutdown<br>
+                    <span style="color:var(--green);font-weight:700;font-size:0.7rem">
+                        ▸ GitHub Repository의 docs/images/ 에서 시연영상.mp4 확인 가능
+                    </span><br>
+                    <a href="https://github.com/daehoski/eco-stream-greenops" target="_blank"
+                        style="color:var(--cyan);text-decoration:underline;font-size:0.64rem">
+                        https://github.com/daehoski/eco-stream-greenops
+                    </a>
                 </div>
             </div>
         </div>
