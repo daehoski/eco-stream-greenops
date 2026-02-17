@@ -614,11 +614,43 @@
             .hero h1 {
                 font-size: 2rem;
             }
+
+            /* 페이지 넘김 방지 - 이미지/카드 짤림 해결 */
+            .section,
+            .card,
+            .media-item,
+            .media-grid,
+            .video-container,
+            .detail-card,
+            .detail-grid,
+            .stat-card,
+            .stats-row,
+            .tech-grid,
+            .timeline-item,
+            .trouble-container,
+            .arch-pipeline,
+            .hero {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            /* 섹션 라벨 다음에 바로 페이지 넘기지 않기 */
+            .section-label {
+                break-after: avoid;
+                page-break-after: avoid;
+            }
+
+            /* 이미지가 넘치지 않도록 */
+            .media-item img {
+                max-width: 100%;
+                max-height: 500px;
+                object-fit: contain;
+            }
         }
 
         @page {
             size: A4;
-            margin: 8mm;
+            margin: 10mm;
         }
     </style>
 </head>
