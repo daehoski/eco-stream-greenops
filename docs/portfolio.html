@@ -100,6 +100,21 @@
             color: var(--green)
         }
 
+        nav .links a.demo-btn {
+            background: linear-gradient(135deg, var(--green), var(--cyan));
+            color: var(--bg);
+            padding: 5px 14px;
+            border-radius: 6px;
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        nav .links a.demo-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 211, 153, 0.3);
+            color: var(--bg);
+        }
+
         /* ===== HERO ===== */
         .hero {
             text-align: center;
@@ -810,6 +825,7 @@
                 <a href="#results">Results</a>
                 <a href="#monitoring">Monitoring</a>
                 <a href="https://github.com/daehoski/eco-stream-greenops" target="_blank">GitHub ↗</a>
+                <a class="demo-btn" id="nav-demo" href="http://192.168.45.10:30080" target="_blank">▶ Live Demo</a>
             </div>
         </div>
     </nav>
@@ -823,6 +839,12 @@
             <p>유휴 베어메탈 서버 전력을 0W로 만드는<br>이벤트 기반 물리 노드 자동 전원 제어 플랫폼</p>
             <div class="meta-pills">
                 <div class="meta-pill"><span class="dot"></span>Kubernetes v1.29 · 3-Node Bare-Metal Cluster</div>
+            </div>
+            <div style="margin-top:24px">
+                <a id="hero-demo" href="http://192.168.45.10:30080" target="_blank"
+                    style="display:inline-block;background:linear-gradient(135deg,var(--green),var(--cyan));color:var(--bg);text-decoration:none;font-size:0.85rem;font-weight:700;padding:12px 32px;border-radius:10px;transition:transform 0.2s,box-shadow 0.2s">
+                    ▶ Frontend Demo 바로가기
+                </a>
             </div>
         </div>
 
