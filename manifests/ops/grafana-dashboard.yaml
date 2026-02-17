@@ -186,14 +186,88 @@ data:
               "legendFormat": "Max Replicas"
             }
           ]
+        },
+            {
+              "title": "Node Power Consumption (Watts)",
+              "type": "timeseries",
+              "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "watt",
+                  "custom": { "fillOpacity": 30, "lineWidth": 2, "gradientMode": "scheme" },
+                  "color": { "mode": "continuous-GrYlRd" },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      { "color": "green", "value": null },
+                      { "color": "yellow", "value": 30 },
+                      { "color": "red", "value": 60 }
+                    ]
+                  }
+                }
+              },
+              "targets": [
+                {
+                  "expr": "rate(kepler_node_platform_joules_total[1m])",
+                  "legendFormat": "{{instance}} (Total)"
+                }
+              ]
+            },
+            {
+              "title": "Power by Component (CPU / DRAM)",
+              "type": "timeseries",
+              "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "watt",
+                  "custom": { "fillOpacity": 20, "lineWidth": 2, "stacking": { "mode": "normal" } }
+                }
+              },
+              "targets": [
+                {
+                  "expr": "rate(kepler_node_core_joules_total[1m])",
+                  "legendFormat": "{{instance}} CPU"
+                },
+                {
+                  "expr": "rate(kepler_node_dram_joules_total[1m])",
+                  "legendFormat": "{{instance}} DRAM"
+                }
+              ]
+            },
+            {
+              "title": "Top Container Power Usage (Watts)",
+              "type": "bargauge",
+              "gridPos": { "h": 8, "w": 24, "x": 0, "y": 32 },
+              "datasource": { "type": "prometheus", "uid": "prometheus" },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "watt",
+                  "thresholds": {
+                    "steps": [
+                      { "color": "green", "value": null },
+                      { "color": "yellow", "value": 5 },
+                      { "color": "red", "value": 15 }
+                    ]
+                  }
+                }
+              },
+              "options": { "orientation": "horizontal", "displayMode": "gradient" },
+              "targets": [
+                {
+                  "expr": "topk(10, rate(kepler_container_package_joules_total{container_namespace=~\"default|kafka\"}[1m]))",
+                  "legendFormat": "{{container_name}} ({{pod_name}})"
+                }
+              ]
+            }
+          ],
+          "refresh": "5s",
+          "schemaVersion": 38,
+          "style": "dark",
+          "tags": ["greenops", "eco-kube", "kepler"],
+          "templating": { "list": [] },
+          "time": { "from": "now-30m", "to": "now" },
+          "title": "GreenOps - Eco-Kube Dashboard",
+          "uid": "greenops-ecokube"
         }
-      ],
-      "refresh": "5s",
-      "schemaVersion": 38,
-      "style": "dark",
-      "tags": ["greenops", "eco-kube"],
-      "templating": { "list": [] },
-      "time": { "from": "now-30m", "to": "now" },
-      "title": "GreenOps - Eco-Kube Dashboard",
-      "uid": "greenops-ecokube"
-    }
