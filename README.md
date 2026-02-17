@@ -62,8 +62,8 @@ graph TD
     Kafka -->|Trigger| KEDA
     KEDA -->|Scale 0->N| Pod
     
-    GreenOps -.->|Wake-Up (WOL)| Worker2
-    GreenOps -.->|Shutdown (SSH)| Worker2
+    GreenOps -.->|"Wake-Up (WOL)"| Worker2
+    GreenOps -.->|"Shutdown (SSH)"| Worker2
     
     Pod -->|Pull & Process| Kafka
 ```
