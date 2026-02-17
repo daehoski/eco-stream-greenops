@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eco-web-code
+  namespace: default
+data:
+  app.py: |
+    from flask import Flask, render_template_string, request, redirect, url_for
+    from kafka import KafkaProducer
+    import json
+    import os
+    import socket
+
+    app = Flask(__name__)
+    
+    # Kafka Config
+    KAFKA_BROKER = 'my-cluster-kafka-bootstrap.kafka.svc:9092'
+    TOPIC = 'video-processing'
+
+    producer = KafkaProducer(
+        bootstrap_servers=[KAFKA_BROKER],
+        value_serializer=lambda v: json.dumps(v).encode('utf-8')
+    )
+
+    HTML_TEMPLATE = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Eco-Stream Upload</title>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+            .container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+            h1 { color: #2ecc71; margin-bottom: 1.5rem; }
+            input[type="file"] { margin-bottom: 1rem; }
+            button { background-color: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-size: 1rem; transition: background 0.3s; }
+            button:hover { background-color: #27ae60; }
+            .status { margin-top: 1rem; color: #555; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🌿 Eco-Stream</h1>
+            <p>Upload a video to process with Green Energy.</p>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <br>
+                <button type="submit">Upload & Process</button>
+            </form>
+            {% if message %}
+            <div class="status">{{ message }}</div>
+            {% endif %}
+            <p style="font-size: 0.8rem; color: #888; margin-top: 2rem;">Server: {{ hostname }}</p>
+        </div>
+    </body>
+    </html>
+    """
+
+    @app.route('/', methods=['GET'])
+    def index():
+        return render_template_string(HTML_TEMPLATE, hostname=socket.gethostname())
+
+    @app.route('/upload', methods=['POST'])
+    def upload_file():
+        if 'file' not in request.files:
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            return redirect(request.url)
+        
+        # In a real app, save file to PVC. Here we just simulate metadata.
+        filename = file.filename
+        file_size = 1024 * 1024 * 50 # Simulate 50MB
+        
+        # Send to Kafka
+        message = {
+            'filename': filename,
+            'size': file_size,
+            'action': 'transcode',
+            'timestamp': os.popen('date').read().strip()
+        }
+        producer.send(TOPIC, message)
+        producer.flush()
+        
+        return render_template_string(HTML_TEMPLATE, message=f"✅ '{filename}' queued for Green Processing!", hostname=socket.gethostname())
+
+    if __name__ == '__main__':
+        app.run(host='0.0.0.0', port=5000)
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eco-web
+  labels:
+    app: eco-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eco-web
+  template:
+    metadata:
+      labels:
+        app: eco-web
+    spec:
+      containers:
+      - name: eco-web
+        image: python:3.9-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - pip install flask kafka-python && python /app/app.py
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: code-volume
+          mountPath: /app
+      nodeSelector:
+        kubernetes.io/hostname: k8s-worker1
+      volumes:
+      - name: code-volume
+        configMap:
+          name: eco-web-code
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eco-web-service
+spec:
+  type: NodePort
+  selector:
+    app: eco-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+      nodePort: 30080

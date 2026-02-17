@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: np-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: np-pods
+  template:
+    metadata:
+      labels:
+        app: np-pods
+    spec:
+      containers:
+      - name: np-pods
+        image: sysnet4admin/echo-hname
+        ports:
+        - containerPort: 80

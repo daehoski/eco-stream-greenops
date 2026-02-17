@@ -1,0 +1,55 @@
+# 1. 테스트용 워커 배포 (eco-worker)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eco-worker
+  namespace: default
+spec:
+  replicas: 0          # 초기 상태는 0 (GreenOps 전력 절감)
+  selector:
+    matchLabels:
+      app: eco-worker
+  template:
+    metadata:
+      labels:
+        app: eco-worker
+    spec:
+      containers:
+      - name: worker
+        image: busybox
+        command: ["/bin/sh", "-c", "sleep 3600"]
+        lifecycle:
+          postStart:
+            exec:
+              # 파드 생성 시 마스터 노드의 로그 파일에 기록
+              command: ["/bin/sh", "-c", "echo \"[$(date)] 🟢 [GreenOps] KEDA Trigger: Worker 2 부팅 신호 전송\" >> /var/log/greenops.log"]
+          preStop:
+            exec:
+              # 파드 삭제 시 마스터 노드의 로그 파일에 기록
+              command: ["/bin/sh", "-c", "echo \"[$(date)] 🔴 [GreenOps] KEDA Trigger: Worker 2 절전 모드 진입\" >> /var/log/greenops.log"]
+        volumeMounts:
+        - name: log-vol
+          mountPath: /var/log
+      volumes:
+      - name: log-vol
+        hostPath:
+          path: /var/log  # 마스터 노드의 실제 경로와 동기화
+---
+# 2. KEDA 스케일링 설정 (ScaledObject)
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-scaledobject
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: eco-worker
+  pollingInterval: 5      # 5초마다 체크
+  cooldownPeriod:  30     # 일 끝나고 30초 뒤에 종료
+  minReplicaCount: 0      # 최소 0개 (Scale to Zero)
+  maxReplicaCount: 10     # 최대 10개
+  triggers:
+- type: cpu
+    metadata:
+      type: Utilization
+      value: "10" # CPU 사용량이 10%만 넘어도 파드를 늘려라!

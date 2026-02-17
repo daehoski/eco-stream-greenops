@@ -1,0 +1,41 @@
+# kafka-scaler-final.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eco-worker
+  namespace: default
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: eco-worker
+  template:
+    metadata:
+      labels:
+        app: eco-worker
+    spec:
+      containers:
+      - name: worker
+        image: busybox
+        command: ["/bin/sh", "-c", "sleep 3600"]
+        # 로그는 마스터 노드 대신 파드 내부 로그로 확인하는 게 정신 건강에 좋습니다.
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: kafka-scaledobject
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: eco-worker
+  pollingInterval: 5
+  cooldownPeriod:  30
+  minReplicaCount: 0  # 메시지 없으면 전력 절감을 위해 0개로! (GreenOps)
+  maxReplicaCount: 10
+  triggers:
+  - type: kafka
+    metadata:
+      bootstrapServers: my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092
+      topic: eco-topic
+      consumerGroup: keda-test-group
+      lagThreshold: "10" # 메시지가 10개 쌓일 때마다 파드 1개씩 추가

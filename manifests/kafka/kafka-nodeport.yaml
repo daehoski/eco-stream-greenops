@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-kafka-external
+  namespace: kafka
+spec:
+  type: NodePort
+  selector:
+    strimzi.io/cluster: my-cluster
+    strimzi.io/name: my-cluster-kafka
+  ports:
+    - name: external-broker
+      port: 9094
+      targetPort: 9092
+      nodePort: 30094  # <--- 30094번 포트로 접속 가능!

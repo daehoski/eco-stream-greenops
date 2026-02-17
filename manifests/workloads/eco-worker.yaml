@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eco-worker-code
+  namespace: default
+data:
+  worker.py: |
+    from kafka import KafkaConsumer
+    import json
+    import time
+    import os
+    import sys
+
+    # Kafka Config
+    KAFKA_BROKER = 'my-cluster-kafka-bootstrap.kafka.svc:9092'
+    TOPIC = 'video-processing'
+    GROUP_ID = 'eco-worker-group'
+
+    print(f"Starting Eco-Worker... Connecting to {KAFKA_BROKER}")
+
+    # Retry connection
+    while True:
+        try:
+            consumer = KafkaConsumer(
+                TOPIC,
+                bootstrap_servers=[KAFKA_BROKER],
+                auto_offset_reset='earliest',
+                enable_auto_commit=True,
+                group_id=GROUP_ID,
+                value_deserializer=lambda x: json.loads(x.decode('utf-8'))
+            )
+            print("Connected to Kafka!")
+            break
+        except Exception as e:
+            print(f"Waiting for Kafka... {e}")
+            time.sleep(5)
+
+    print("Listening for messages...")
+
+    for message in consumer:
+        data = message.value
+        filename = data.get('filename', 'unknown')
+        print(f"♻️ [RECEIVED] Processing video: {filename}")
+        
+        # Simulate Heavy Processing (FFmpeg Transcoding)
+        # We will simulate CPU load
+        start_time = time.time()
+        
+        print(f"🎬 [FFmpeg] Transcoding {filename} to H.265 (HEVC)...")
+        # In real scenario: os.system(f"ffmpeg -i {input} ...")
+        
+        # Simulation: Sleep 5 seconds per job
+        time.sleep(5)
+        
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"🗑️ [CLEANUP] Deleting source video: {filename} (Freeing 50MB)")
+        print(f"✅ [DONE] Finished {filename} in {duration:.2f}s. Waiting for next...")
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eco-worker
+  labels:
+    app: eco-worker
+spec:
+  replicas: 0 # Controlled by KEDA
+  selector:
+    matchLabels:
+      app: eco-worker
+  template:
+    metadata:
+      labels:
+        app: eco-worker
+    spec:
+      containers:
+      - name: eco-worker
+        image: python:3.9-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - pip install kafka-python && python -u /app/worker.py
+        resources:
+          requests:
+            cpu: "200m" # Request enough to justify scaling
+        volumeMounts:
+        - name: code-volume
+          mountPath: /app
+      nodeSelector:
+        kubernetes.io/hostname: k8s-worker2
+      tolerations:
+      - key: "node.kubernetes.io/unschedulable"
+        operator: "Exists"
+        effect: "NoSchedule"
+      # Wait! I removed Tolerations in test pod to keep it Pending.
+      # BUT, if I want it to RUN, it needs to be Uncordoned.
+      # The GreenOps logic is: Pending -> Uncordon -> Schedule.
+      # So, regular pods MUST NOT tolerate unchedulable.
+      # If they tolerate it, they will schedule on a Cordoned node!
+      # We want them to NOT schedule, so they become Pending.
+      # So NO tolerations here.
+      volumes:
+      - name: code-volume
+        configMap:
+          name: eco-worker-code

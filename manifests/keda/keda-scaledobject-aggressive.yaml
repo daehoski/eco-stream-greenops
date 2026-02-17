@@ -1,0 +1,35 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: eco-worker-scaler
+  namespace: default
+spec:
+  scaleTargetRef:
+    name: eco-worker
+  pollingInterval: 1   # Check every 1 second (Demo Mode)
+  cooldownPeriod: 30   # Scale down after 30s of silence
+  minReplicaCount: 0
+  maxReplicaCount: 10
+  triggers:
+  - type: kafka
+    metadata:
+      bootstrapServers: my-cluster-kafka-bootstrap.kafka.svc:9092
+      consumerGroup: eco-worker-group
+      topic: video-processing
+      lagThreshold: "1"
+      offsetResetPolicy: latest
+  advanced:
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+          - type: Pods
+            value: 10
+            periodSeconds: 15
+        scaleDown:
+          stabilizationWindowSeconds: 30
+          policies:
+          - type: Percent
+            value: 100
+            periodSeconds: 15

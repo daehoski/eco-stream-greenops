@@ -1,0 +1,44 @@
+# System & IDE
+.DS_Store
+.idea/
+.vscode/
+.gemini/
+.antigravity-server/
+.ssh/
+.kube/
+.cache/
+.local/
+.npm/
+.config/
+.pki/
+.pm2/
+.ansible/
+.dbus/
+
+# Large Files
+test-video.mp4
+strimzi-0.41.0.yaml
+strimzi-fix.yaml
+
+# Logs
+*.log
+stress.log
+
+# Temporary
+check_lag.py
+
+# History
+.bash_history
+.mysql_history
+.bash_logout
+.bash_profile
+.bashrc
+.cshrc
+.tcshrc
+.lesshst
+.viminfo
+.wget-hsts
+.Xauthority
+.ICEauthority
+.esd_auth
+.vscode-server/
