@@ -1,0 +1,199 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: greenops-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  greenops-dashboard.json: |
+    {
+      "annotations": { "list": [] },
+      "editable": true,
+      "fiscalYearStartMonth": 0,
+      "graphTooltip": 0,
+      "id": null,
+      "links": [],
+      "liveNow": false,
+      "panels": [
+        {
+          "title": "Eco-Worker Replicas (Pod Count)",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "color": { "mode": "palette-classic" },
+              "custom": {
+                "fillOpacity": 30,
+                "lineWidth": 2,
+                "pointSize": 5,
+                "showPoints": "auto"
+              },
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 3 },
+                  { "color": "red", "value": 8 }
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "expr": "kube_deployment_status_replicas{namespace=\"default\", deployment=\"eco-worker\"}",
+              "legendFormat": "Running Replicas"
+            },
+            {
+              "expr": "kube_deployment_spec_replicas{namespace=\"default\", deployment=\"eco-worker\"}",
+              "legendFormat": "Desired Replicas"
+            }
+          ]
+        },
+        {
+          "title": "Node Status (k8s-worker2)",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 6, "x": 12, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                { "options": { "0": { "text": "OFF / Cordoned", "color": "red" }, "1": { "text": "ON / Ready", "color": "green" } }, "type": "value" }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "expr": "kube_node_status_condition{node=\"k8s-worker2\", condition=\"Ready\", status=\"true\"}",
+              "legendFormat": "Worker2 Status"
+            }
+          ]
+        },
+        {
+          "title": "Node Schedulable (k8s-worker2)",
+          "type": "stat",
+          "gridPos": { "h": 8, "w": 6, "x": 18, "y": 0 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "mappings": [
+                { "options": { "0": { "text": "Cordoned (Unschedulable)", "color": "red" }, "1": { "text": "Schedulable", "color": "green" } }, "type": "value" }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  { "color": "red", "value": null },
+                  { "color": "green", "value": 1 }
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "expr": "1 - kube_node_spec_unschedulable{node=\"k8s-worker2\"}",
+              "legendFormat": "Schedulable"
+            }
+          ]
+        },
+        {
+          "title": "CPU Usage by Node",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit",
+              "custom": { "fillOpacity": 20, "lineWidth": 2 }
+            }
+          },
+          "targets": [
+            {
+              "expr": "1 - avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m]))",
+              "legendFormat": "{{instance}}"
+            }
+          ]
+        },
+        {
+          "title": "Memory Usage by Node",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": { "fillOpacity": 20, "lineWidth": 2 }
+            }
+          },
+          "targets": [
+            {
+              "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+              "legendFormat": "{{instance}}"
+            }
+          ]
+        },
+        {
+          "title": "Pods per Node",
+          "type": "bargauge",
+          "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "thresholds": {
+                "steps": [
+                  { "color": "green", "value": null },
+                  { "color": "yellow", "value": 5 },
+                  { "color": "red", "value": 10 }
+                ]
+              }
+            }
+          },
+          "targets": [
+            {
+              "expr": "count by (node) (kube_pod_info{namespace=\"default\"})",
+              "legendFormat": "{{node}}"
+            }
+          ]
+        },
+        {
+          "title": "HPA Current vs Desired Replicas",
+          "type": "timeseries",
+          "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "fieldConfig": {
+            "defaults": {
+              "custom": { "fillOpacity": 15, "lineWidth": 2 }
+            }
+          },
+          "targets": [
+            {
+              "expr": "kube_horizontalpodautoscaler_status_current_replicas{namespace=\"default\"}",
+              "legendFormat": "Current Replicas"
+            },
+            {
+              "expr": "kube_horizontalpodautoscaler_status_desired_replicas{namespace=\"default\"}",
+              "legendFormat": "Desired Replicas"
+            },
+            {
+              "expr": "kube_horizontalpodautoscaler_spec_max_replicas{namespace=\"default\"}",
+              "legendFormat": "Max Replicas"
+            }
+          ]
+        }
+      ],
+      "refresh": "5s",
+      "schemaVersion": 38,
+      "style": "dark",
+      "tags": ["greenops", "eco-kube"],
+      "templating": { "list": [] },
+      "time": { "from": "now-30m", "to": "now" },
+      "title": "GreenOps - Eco-Kube Dashboard",
+      "uid": "greenops-ecokube"
+    }
