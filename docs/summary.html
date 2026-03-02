@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로젝트 요약서 - Eco-Kube GreenOps</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&display=swap');
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+        }
+
+        .page {
+            background-color: white;
+            width: 800px;
+            margin: 0 auto;
+            padding: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            letter-spacing: 5px;
+            text-decoration: underline;
+            text-underline-offset: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 12px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            width: 20%;
+            font-weight: 700;
+        }
+
+        .section-title {
+            background-color: #f2f2f2;
+            font-weight: 700;
+            padding: 10px;
+            border: 1px solid #000;
+            margin-top: 20px;
+        }
+
+        .content-row {
+            display: flex;
+            border: 1px solid #000;
+            border-top: none;
+        }
+
+        .content-label {
+            width: 20%;
+            background-color: #fff;
+            padding: 15px;
+            border-right: 1px solid #000;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .content-text {
+            width: 80%;
+            padding: 15px;
+            line-height: 1.6;
+        }
+
+        .image-container {
+            border: 1px solid #000;
+            border-top: none;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            background-color: #fff;
+        }
+
+        .placeholder-box {
+            border: 2px dashed #ccc;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.8rem;
+            text-align: center;
+            background-color: #fafafa;
+        }
+
+        .highlight {
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                padding: 0;
+            }
+
+            .page {
+                box-shadow: none;
+                border: none;
+                width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+        <h1>프로젝트 요약서 1</h1>
+
+        <table>
+            <tr>
+                <th>개요</th>
+                <td colspan="5"></td>
+            </tr>
+            <tr>
+                <th>프로젝트명</th>
+                <td colspan="2"><span class="highlight">Eco-Kube: GreenOps 인프라 오케스트레이터</span></td>
+                <th>구분</th>
+                <td colspan="2">개인 / 팀</td>
+            </tr>
+            <tr>
+                <th>프로젝트 목적</th>
+                <td colspan="5">이벤트 기반 서버리스 아키텍처와 전원 관리 컨트롤러를 통한 클러스터 에너지 효율 최적화</td>
+            </tr>
+            <tr>
+                <th>프로젝트 기대효과</th>
+                <td colspan="5">불필요한 컴퓨팅 자원 대기 전력 감소, 운영 비용 절감 및 탄소 배출 저감 효과</td>
+            </tr>
+            <tr>
+                <th>담당업무(팀프로젝트시)</th>
+                <td>인프라 구축 및 GreenOps 로직 구현</td>
+                <th>기간</th>
+                <td colspan="3">2026.02.11 ~ 2026.03.03</td>
+            </tr>
+        </table>
+
+        <div class="section-title">세부내용</div>
+
+        <!-- Section 1 -->
+        <div class="content-row">
+            <div class="content-label">구성 및 작성 내용 1</div>
+            <div class="content-text">
+                <strong>GreenOps 통합 아키텍처 (Smart Power Control)</strong><br>
+                평소에는 서버를 재워두고(Sleep), 작업 요청이 들어오면 실시간으로 깨우는(Wake) 지능형 인프라 제어 통합 설계.
+            </div>
+        </div>
+        <div class="image-container" style="grid-template-columns: 1fr;">
+            <div class="placeholder-box" style="height: 480px; font-size: 1.2rem;">
+                <strong>4단계 핵심 프로세스 시각화 (Architecture)</strong><br>
+                (작업 요청 ➔ 파드 대기 ➔ 깨우기 신호 ➔ 작업 시작!)
+            </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="content-row">
+            <div class="content-label">구성 및 작성 내용 2</div>
+            <div class="content-text">
+                <strong>파드 대기 (노드 없음) & 트리거 감지</strong><br>
+                Kafka Lag을 감시하여 파드를 자동 생성하고, 노드가 없을 때 발생하는 'Pending' 상태를 감지하여 부팅 신호를 전송하는 로직 구현.
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="placeholder-box">KEDA Scaling & Pending<br>(kubectl get pods 시연 화면)</div>
+            <div class="placeholder-box">ScaledObject Manifest<br>(기술적 설정 요약)</div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="content-row">
+            <div class="content-label">구성 및 작성 내용 3</div>
+            <div class="content-text">
+                <strong>물리 서버 원격 부팅 (WOL & SSH)</strong><br>
+                GreenOps Controller가 Wake-on-LAN 패킷으로 노드를 깨우고, 인프라 합류를 자동화. 작업 완료 시 SSH Shutdown으로 전력 100% 차단.
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="placeholder-box">Node Join & Ready Status<br>(kubectl get nodes 화면)</div>
+            <div class="placeholder-box">Controller Log Snippet<br>(WOL & SSH Shutdown 로그)</div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="content-row">
+            <div class="content-label">구성 및 작성 내용 4</div>
+            <div class="content-text">
+                <strong>통합 모니터링 컨트롤 센터 배포</strong><br>
+                Grafana 지능형 대시보드를 임베딩하여 인프라의 에너지 소비 효율과 실시간 파드 상태를 운영자가 시각적으로 파악할 수 있도록 구현.
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="placeholder-box">Control Center Dashboard<br>(메인 웹 화면 전체)</div>
+            <div class="placeholder-box">Grafana Metrics Graph<br>(Scaling 시연 그래프)</div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

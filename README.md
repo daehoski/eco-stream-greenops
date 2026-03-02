@@ -119,3 +119,11 @@ nohup ./greenops-controller.sh &
 # 모니터링
 watch -n 1 "kubectl get pods; cat /var/log/greenops.log | tail -n 5"
 ```
+
+---
+
+## 🚀 최신 업데이트 (March 3, 2026)
+
+- **통합 GreenOps 대시보드 배포**: Grafana 실시간 지표(Kepler 전력 소모량 등)를 프론트엔드 대시보드에 직접 임베딩하여 관찰 가능성(Observability) 강화.
+- **포트폴리오 요약서(Summary) 최적화**: 13단계 정밀 아키텍처와 시각적 4단계 흐름을 결합하여 가독성과 전문성을 동시에 확보.
+- **인프라 자동화 폴리싱**: Kafka, KEDA, Control Plane 간의 핸드쉐이크 로직 안정화 및 불필요한 로컬 링크 제거.
